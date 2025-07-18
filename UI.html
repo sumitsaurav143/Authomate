@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>KYC Verification</title>
+</head>
+<body>
+  <h2>KYC Compliance Check</h2>
+  <form id="kyc-form">
+    <label>Full Name: <input type="text" name="full_name" required></label><br><br>
+    <label>Date of Birth: <input type="date" name="dob" required></label><br><br>
+    <label>Upload ID Image: <input type="file" name="file" accept="image/*" required></label><br><br>
+    <button type="submit">Verify</button>
+  </form>
+
+  <pre id="output"></pre>
+
+  <script>
+    document.getElementById('kyc-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/kyc/verify", {
+          method: "POST",
+          body: formData
+        });
+
+        const result = await response.json();
+        document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+      } catch (err) {
+        console.error("Error:", err);
+        document.getElementById('output').textContent = "Error contacting API.";
+      }
+    });
+  </script>
+</body>
+</html>
