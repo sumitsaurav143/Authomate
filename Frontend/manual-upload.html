@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual ID Verification</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="manual-upload-container">
+        <h1>Manual ID Verification</h1>
+        <div id="userInfo"></div>
+        
+        <div class="instructions">
+            <h3>Please follow these steps carefully:</h3>
+            <ol>
+                <li>Ensure all documents are clear and readable</li>
+                <li>Files must be in JPG or PNG format</li>
+                <li>Maximum file size: 5MB each</li>
+                <li>All fields are required</li>
+            </ol>
+        </div>
+        
+        <form id="manualUploadForm">
+            <div class="form-group">
+                <label for="manualIdType">ID Type:</label>
+                <select id="manualIdType" name="manualIdType" required>
+                    <option value="">Select ID Type</option>
+                    <option value="passport">Passport</option>
+                    <option value="driver_license">Driver's License</option>
+                    <option value="national_id">National ID</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="manualIdNumber">ID Number:</label>
+                <input type="text" id="manualIdNumber" name="manualIdNumber" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="idFront">ID Front Side:</label>
+                <input type="file" id="idFront" name="idFront" accept="image/*" required>
+                <div class="file-requirements">Clear photo of the front of your ID</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="idBack">ID Back Side:</label>
+                <input type="file" id="idBack" name="idBack" accept="image/*" required>
+                <div class="file-requirements">Clear photo of the back of your ID</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="manualSelfie">Selfie with ID:</label>
+                <input type="file" id="manualSelfie" name="manualSelfie" accept="image/*" required>
+                <div class="file-requirements">Your face clearly visible with the ID</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="additionalNotes">Additional Notes:</label>
+                <textarea id="additionalNotes" name="additionalNotes" rows="4"></textarea>
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="consent" name="consent" required>
+                <label for="consent">I confirm these documents are authentic and belong to me</label>
+            </div>
+            
+            <button type="submit" class="submit-btn">Submit for Manual Review</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Display user info
+            const userData = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (!userData) {
+                window.location.href = 'register.html';
+                return;
+            }
+
+            document.getElementById('userInfo').innerHTML = `
+                <p><strong>Name:</strong> ${userData.firstName} ${userData.lastName}</p>
+                <p><strong>Email:</strong> ${userData.email}</p>
+            `;
+
+            // If previous verification attempt exists, pre-fill some fields
+            if (userData.verification) {
+                document.getElementById('manualIdType').value = userData.verification.idType || '';
+                document.getElementById('manualIdNumber').value = userData.verification.idNumber || '';
+            }
+
+            // Handle form submission
+            document.getElementById('manualUploadForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const manualIdType = document.getElementById('manualIdType').value;
+                const manualIdNumber = document.getElementById('manualIdNumber').value;
+                const idFront = document.getElementById('idFront').files[0];
+                const idBack = document.getElementById('idBack').files[0];
+                const manualSelfie = document.getElementById('manualSelfie').files[0];
+                const additionalNotes = document.getElementById('additionalNotes').value;
+                
+                // Create manual verification data
+                const manualVerification = {
+                    idType: manualIdType,
+                    idNumber: manualIdNumber,
+                    idFrontName: idFront.name,
+                    idBackName: idBack.name,
+                    selfieName: manualSelfie.name,
+                    additionalNotes,
+                    submittedAt: new Date().toISOString(),
+                    verificationType: 'manual'
+                };
+                
+                // Update user data
+                userData.manualVerification = manualVerification;
+                sessionStorage.setItem('currentUser', JSON.stringify(userData));
+                
+                // Show confirmation
+                alert('Your documents have been submitted for manual review. You will receive an email with updates.');
+                
+                // In a real app, this would redirect to a confirmation page
+                // window.location.href = 'verification-confirmation.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+:root {
+    --bg: #e9efff;
+    --text: #1c1c2c;
+    --input: #ffffff;
+    --border: #c0c7e4;
+    --accent: #003366;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --invert: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: all 0.3s ease;
+    padding: 1rem;
+    flex-direction: column;
+}
+
+
+.registration-container {
+    background-color: var(--input);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--shadow);
+    width: 100%;
+    max-width: 700px;
+    transition: background-color 0.3s ease;
+}
+
+.registration-container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    padding: 0.6rem;
+    font-size: medium;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--input);
+    color: var(--text);
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.2);
+    outline: none;
+}
+
+.file-upload input[type="file"] {
+    padding: 0;
+    border: none;
+}
+
+#preview {
+    margin-top: 0.5rem;
+}
+
+#preview img {
+    max-width: 100%;
+    max-height: 150px;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    border: 2px solid var(--accent);
+    background-color: var(--input);
+    padding: 4px;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+/* Exit img style enhancement */
+.exitimg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid var(--accent);
+    background-color: var(--input);
+    padding: 4px;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1.5rem;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #002244;
+}
+
+/* Dark mode toggle switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(18px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+:root {
+    --bg: #0a0f1e;
+    --text: #e0e6f6;
+    --input: #121a2f;
+    --border: #2a3450;
+    --accent: #1a4dab;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --invert: #ffffff;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.registration-container {
+    background-color: var(--input);
+    box-shadow: 0 8px 20px var(--shadow);
+}
+
+.form-group input {
+    background: var(--input);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.form-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(26, 77, 171, 0.4);
+}
+
+#preview img,
+.exitimg {
+    border: 2px solid var(--accent);
+    background-color: var(--input);
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.submit-btn {
+    background-color: var(--accent);
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: #153a85;
+}
+
+.slider {
+    background-color: #444;
+}
+
+input:checked + .slider {
+    background-color: var(--accent);
+}

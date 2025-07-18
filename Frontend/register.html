@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="register.css">
+    <style>
+        header {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--text-color, #ffffff);
+        }
+    </style>
+</head>
+<body>
+
+    <header>AuthoMate</header>
+
+    <div class="registration-container">
+        <h1>Create an Account</h1>
+        <form id="registrationForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="documentid">Document ID</label>
+                    <input type="text" id="documentid" name="documentid" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required minlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+   
+            </div>
+            <button type="submit" class="submit-btn">Register</button>
+        </form>
+    </div>
+
+    <script src="register.js"></script>
+</body>
+</html>

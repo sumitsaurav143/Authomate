@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #0f172a; /* Dark blue background */
+  color: #e2e8f0; /* Light text for contrast */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.card {
+  text-align: center;
+  padding: 2rem;
+  background: #1e293b; /* Slightly lighter dark blue for the card */
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  max-width: 400px;
+  width: 90%;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.loader {
+  border: 6px solid #334155; /* Muted border */
+  border-top: 6px solid #3b82f6; /* Accent blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  animation: spin 1s linear infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+h2 {
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
+}
+
+p {
+  margin: 0.5rem 0;
+  color: #cbd5e1;
+}
+
+.success h2 {
+  color: #22c55e;
+}
+
+.error h2 {
+  color: #ef4444;
+}
+
+.submit-btn,
+.secondary-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #2563eb;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  color: #3b82f6;
+  border: 2px solid #3b82f6;
+}
+
+.secondary-btn:hover {
+  background-color: #3b82f6;
+  color: white;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

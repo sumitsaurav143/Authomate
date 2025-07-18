@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ID Verification Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="verification-result.css">
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="loader" class="card">
+    <div class="loader"></div>
+    <p>Verifying your documents...</p>
+  </div>
+
+  <!-- Success Result -->
+  <div id="successResult" class="card hidden success">
+    <h2>Verification Successful</h2>
+    <p>Your ID has been verified successfully!</p>
+    <button class="submit-btn" onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+  </div>
+
+  <!-- Failure Result -->
+  <div id="errorResult" class="card hidden error">
+    <h2>Verification Failed</h2>
+    <p>We couldn't automatically verify your ID.</p>
+    <p>Please try manual upload or contact support.</p>
+    <button id="manualUploadBtn" class="submit-btn">Start Manual Upload</button>
+    <button id="tryAgainBtn" class="secondary-btn">Try Again</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Simulate backend result after delay
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+
+        // Simulate backend response: success or failure
+        const verificationPassed = Math.random() < 0.5; // Replace with actual backend result
+
+        if (verificationPassed) {
+          document.getElementById('successResult').classList.remove('hidden');
+        } else {
+          document.getElementById('errorResult').classList.remove('hidden');
+        }
+      }, 5000);
+
+      document.getElementById('manualUploadBtn').addEventListener('click', () => {
+        alert('Redirecting to manual upload...');
+        // window.location.href = 'manual-upload.html';
+      });
+
+      document.getElementById('tryAgainBtn').addEventListener('click', () => {
+        window.location.reload();
+      });
+    });
+
+    
+  </script>
+
+</body>
+</html>
