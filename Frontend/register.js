@@ -2,11 +2,11 @@ document.getElementById('registrationForm').addEventListener('submit', function 
     e.preventDefault();
 
     // Get form values
-    const fullName = document.getElementById('fullName').value.trim();
+    const full_name = document.getElementById('fullName').value.trim();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const documentId = document.getElementById('documentid').value.trim();
+    const confirm_password = document.getElementById('confirmPassword').value;
+    const id_no = document.getElementById('documentid').value.trim();
     const dob = document.getElementById('dob').value;
 
     // Clear previous errors
@@ -15,7 +15,7 @@ document.getElementById('registrationForm').addEventListener('submit', function 
     // Validate form
     let isValid = true;
 
-    if (!fullName) {
+    if (!full_name) {
         showError('fullName', 'Full name is required');
         isValid = false;
     }
@@ -36,15 +36,15 @@ document.getElementById('registrationForm').addEventListener('submit', function 
         isValid = false;
     }
 
-    if (!confirmPassword) {
+    if (!confirm_password) {
         showError('confirmPassword', 'Please confirm your password');
         isValid = false;
-    } else if (password !== confirmPassword) {
+    } else if (password !== confirm_password) {
         showError('confirmPassword', 'Passwords do not match');
         isValid = false;
     }
 
-    if (!documentId) {
+    if (!id_no) {
         showError('documentid', 'Document ID is required');
         isValid = false;
     }
@@ -56,14 +56,15 @@ document.getElementById('registrationForm').addEventListener('submit', function 
 
     if (isValid) {
         const userData = {
-            fullName,
-            email,
-            documentId,
+            full_name,
             dob,
+            id_no,
+            email,
+            password,
+            confirm_password,
             registeredAt: new Date().toISOString()
         };
 
-        // Save user data (you may change to localStorage or real API)
         sessionStorage.setItem('currentUser', JSON.stringify(userData));
 
         // Redirect

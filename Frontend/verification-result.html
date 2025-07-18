@@ -1,55 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ID Verification Result</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="verification-result.css">
+  <link rel="stylesheet" href="verification-result.css">
 </head>
+
 <body>
+  <div class="container">
+    <div class="left-panel">
+      <!-- Loader -->
+      <div id="loader" class="card">
+        <div class="loader"></div>
+        <p id="loaderMessage">Checking document quality...</p>
+      </div>
 
-  <!-- Loader -->
-  <div id="loader" class="card">
-    <div class="loader"></div>
-    <p>Verifying your documents...</p>
-  </div>
+      <!-- Success Result -->
+      <div id="successResult" class="card hidden success">
+        <h2>Verification Successful</h2>
+        <p>Your ID has been verified successfully!</p>
+        <button class="submit-btn" onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+      </div>
 
-  <!-- Success Result -->
-  <div id="successResult" class="card hidden success">
-    <h2>Verification Successful</h2>
-    <p>Your ID has been verified successfully!</p>
-    <button class="submit-btn" onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
-  </div>
+      <!-- Failure Result -->
+      <div id="errorResult" class="card hidden error">
+        <h2>Verification Failed</h2>
+        <p>Your ID verification was unsuccessful due to one of the following reasons:</p>
+        <ul>
+          <li>The uploaded document is unclear or expired.</li>
+          <li>The registration details do not match the document.</li>
+        </ul>
+        <p>Please update your profile information and re-upload a clear, valid ID document for verification.</p>
+        <button class="submit-btn" onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+      </div>
+    </div>
 
-  <!-- Failure Result -->
-  <div id="errorResult" class="card hidden error">
-    <h2>Verification Failed</h2>
-    <p>We couldn't automatically verify your ID.</p>
-    <p>Please try manual upload or contact support.</p>
-    <button id="manualUploadBtn" class="submit-btn">Start Manual Upload</button>
-    <button id="tryAgainBtn" class="secondary-btn">Try Again</button>
+    <!-- Right Side (KYC Details) -->
+    <div class="right-panel">
+      <div id="kycDetails" class="kyc-info"></div>
+    </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Simulate backend result after delay
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
+      const messages = [
+        "Checking document quality...",
+        "Analyzing ID details with AI...",
+        "Cross-verifying your data securely...",
+        "Ensuring authenticity of the ID...",
+        "Finalizing the verification..."
+      ];
 
-        // Simulate backend response: success or failure
-        const verificationPassed = Math.random() < 0.5; // Replace with actual backend result
+      // Fetch and display KYC data from sessionStorage
+      const kycData = JSON.parse(sessionStorage.getItem("kycResult"));
+      const kycDetailsContainer = document.getElementById("kycDetails");
 
-        if (verificationPassed) {
-          document.getElementById('successResult').classList.remove('hidden');
+      let currentMessage = 0;
+      const messageElement = document.getElementById('loaderMessage');
+
+      const messageInterval = setInterval(() => {
+        currentMessage++;
+        if (currentMessage < messages.length) {
+          messageElement.textContent = messages[currentMessage];
         } else {
-          document.getElementById('errorResult').classList.remove('hidden');
+          clearInterval(messageInterval);
+
+          setTimeout(() => {
+            document.getElementById('loader').classList.add('hidden');
+            const verificationPassed = kycData && kycData.kycVerified;
+            if (verificationPassed) {
+              document.getElementById('successResult').classList.remove('hidden');
+            } else {
+              document.getElementById('errorResult').classList.remove('hidden');
+            }
+
+            if (kycData && kycDetailsContainer) {
+              let html = "";
+
+              // Show compliance report
+              if (kycData.compliance_report && kycData.compliance_report.length > 0) {
+                html += `<h3>Compliance Report:</h3><ul>`;
+                kycData.compliance_report.forEach(item => {
+                  html += `<li>${item}</li>`;
+                });
+                html += `</ul>`;
+              }
+
+              // Show flags
+              if (kycData.flags) {
+                html += `<h3>Verification Flags:</h3><ul>`;
+                for (const [key, value] of Object.entries(kycData.flags)) {
+                  const flagLabel = key.replace(/_/g, ' ');
+                  const icon = value ? '✅' : '❌';
+                  html += `<li>${icon} <strong>${flagLabel}:</strong> ${value}</li>`;
+                }
+                html += `</ul>`;
+              }
+
+              kycDetailsContainer.innerHTML = html;
+              kycDetailsContainer.classList.add("visible");
+
+              const listItems = kycDetailsContainer.querySelectorAll("li");
+              listItems.forEach((li, index) => {
+                li.style.animationDelay = `${index * 300}ms`;
+              });
+            }
+          }, 1000);
         }
-      }, 5000);
+      }, 2000);
 
       document.getElementById('manualUploadBtn').addEventListener('click', () => {
         alert('Redirecting to manual upload...');
-        // window.location.href = 'manual-upload.html';
       });
 
       document.getElementById('tryAgainBtn').addEventListener('click', () => {
@@ -57,8 +121,52 @@
       });
     });
 
-    
+    // function showKycDetails(data) {
+    //   const container = document.getElementById('kycDetails');
+    //   container.innerHTML = '';
+
+    //   if (data.compliance_report?.length) {
+    //     const title = document.createElement('h3');
+    //     title.textContent = 'Compliance Report:';
+    //     container.appendChild(title);
+
+    //     const ul = document.createElement('ul');
+    //     data.compliance_report.forEach((item, i) => {
+    //       const li = document.createElement('li');
+    //       li.textContent = item;
+    //       li.style.animationDelay = `${i * 200}ms`;
+    //       ul.appendChild(li);
+    //     });
+    //     container.appendChild(ul);
+    //   }
+
+    //   if (data.flags) {
+    //     const title = document.createElement('h3');
+    //     title.textContent = 'Verification Flags:';
+    //     container.appendChild(title);
+
+    //     const ul = document.createElement('ul');
+    //     Object.entries(data.flags).forEach(([key, value], i) => {
+    //       const li = document.createElement('li');
+    //       const label = key.replace(/_/g, ' ');
+    //       const icon = value ? '✅' : '❌';
+    //       li.textContent = `${icon} ${label}: ${value}`;
+    //       li.style.animationDelay = `${(i + 5) * 200}ms`;
+    //       ul.appendChild(li);
+    //     });
+    //     container.appendChild(ul);
+    //   }
+
+    //   container.classList.remove('hidden');
+    //   setTimeout(() => container.classList.add('visible'), 50);
+    // }
+
+    // setTimeout(() => {
+    //   showKycDetails(kycData); // your KYC result object
+    // }, 1000);
+
   </script>
 
 </body>
+
 </html>

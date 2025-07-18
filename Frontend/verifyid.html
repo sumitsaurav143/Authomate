@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ID Verification Upload</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
- <link rel="stylesheet" href="verifyid.css">
+  <link rel="stylesheet" href="verifyid.css">
+  <script src="verifyid.js" defer></script>
 </head>
+
 <body>
 
   <div class="card">
@@ -16,7 +19,7 @@
       📷 Choose ID Image
     </label>
     <input type="file" id="idFile" accept="image/*" />
-    <img id="preview" class="preview hidden" alt="Preview"/>
+    <img id="preview" class="preview hidden" alt="Preview" />
 
     <div class="progress hidden" id="progressBarContainer">
       <div class="progress-bar" id="progressBar"></div>
@@ -27,84 +30,7 @@
 
   <div id="toast" class="toast"></div>
 
-  <script>
-    const fileInput = document.getElementById('idFile');
-    const preview = document.getElementById('preview');
-    const toast = document.getElementById('toast');
-    const progressBar = document.getElementById('progressBar');
-    const progressBarContainer = document.getElementById('progressBarContainer');
-
-    fileInput.addEventListener('change', function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          preview.src = e.target.result;
-          preview.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    function showToast(message, isError = false) {
-      toast.textContent = message;
-      toast.classList.add('show');
-      if (isError) toast.classList.add('error');
-      else toast.classList.remove('error');
-
-      setTimeout(() => {
-        toast.classList.remove('show');
-        // Redirect on success
-        if (!isError) {
-          window.location.href = "verification-result.html";
-        }
-      }, 2500);
-    }
-
-    function submitFile() {
-      const file = fileInput.files[0];
-      if (!file) {
-        showToast("Please choose a file first!", true);
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("id_file", file);
-
-      progressBarContainer.classList.remove('hidden');
-      progressBar.style.width = '0%';
-
-      // Simulated upload with progress
-      let progress = 0;
-      const interval = setInterval(() => {
-        if (progress >= 100) {
-          clearInterval(interval);
-          showToast("ID uploaded successfully!");
-        } else {
-          progress += 10;
-          progressBar.style.width = progress + "%";
-        }
-      }, 200);
-
-      // Real API call (uncomment and adapt as needed)
-      /*
-      fetch("http://<your-ec2-ip>:8000/upload-id", {
-        method: "POST",
-        body: formData
-      })
-      .then(response => {
-        if (!response.ok) throw new Error("Upload failed!");
-        return response.json();
-      })
-      .then(data => {
-        showToast("Upload successful!");
-      })
-      .catch(error => {
-        showToast("Upload failed!", true);
-      });
-      */
-    }
-  </script>
 
 </body>
+
 </html>

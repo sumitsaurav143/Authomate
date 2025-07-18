@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg-color: #0d1b2a;
+      --card-bg: #1b263b;
+      --text-color: #e0e1dd;
+      --highlight: #84a9c0;
+      --primary: #415a77;
+      --danger: #e63946;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .dashboard {
+      display: flex;
+      flex-direction: row;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      max-width: 950px;
+      width: 95%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    .left-panel {
+      background-color: var(--primary);
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .left-panel img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 5px solid #fff;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+
+    .left-panel h2 {
+      margin: 10px 0 0;
+      font-size: 22px;
+      color: white;
+    }
+
+    .right-panel {
+      width: 65%;
+      padding: 40px;
+      background-color: var(--card-bg);
+    }
+
+    .right-panel h3 {
+      margin-top: 0;
+      font-size: 24px;
+      color: var(--highlight);
+      margin-bottom: 20px;
+    }
+
+    .user-info p {
+      margin: 14px 0;
+      font-size: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 6px;
+    }
+
+    .user-info strong {
+      color: #f1faee;
+      display: inline-block;
+      width: 140px;
+    }
+
+    .logout-btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      background-color: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #c71f2f;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
+      }
+      .left-panel, .right-panel {
+        width: 100%;
+        text-align: center;
+        padding: 30px 20px;
+      }
+      .user-info strong {
+        display: block;
+        margin-bottom: 4px;
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard">
+    <div class="left-panel">
+      <img src="dummy-profile.jpg" alt="User Avatar" />
+      <h2 id="userName">User</h2>
+    </div>
+
+    <div class="right-panel">
+      <h3>Profile Details</h3>
+      <div class="user-info" id="userDetails"></div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const userData = JSON.parse(sessionStorage.getItem("currentUser"));
+      const kycData = JSON.parse(sessionStorage.getItem("kycResult"));
+
+      if (!userData) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.getElementById("userName").textContent = userData.full_name || "User";
+
+      const fields = {
+        "Full Name": userData.full_name,
+        "Date of Birth": userData.dob,
+        "ID Number": userData.id_no,
+        "Email": userData.email,
+        "KYC Verified": kycData ? (kycData.kycVerified ? "Yes" : "No") : "Pending"
+      };
+
+      const userDetailsDiv = document.getElementById("userDetails");
+      let html = '';
+      for (const [label, value] of Object.entries(fields)) {
+        if (value) {
+          html += `<p><strong>${label}:</strong> ${value}</p>`;
+        }
+      }
+
+      userDetailsDiv.innerHTML = html;
+    });
+
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>

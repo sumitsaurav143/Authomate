@@ -226,3 +226,57 @@ body {
 input:checked + .slider {
     background-color: var(--accent);
 }
+
+.homepage-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    padding: 2rem;
+}
+
+.header {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    font-size: 2.2rem;
+    color: var(--accent);
+}
+
+.signup-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover {
+    background-color: #002244;
+}
+
+.intro-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.intro-section p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}

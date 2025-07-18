@@ -23,8 +23,8 @@ init_db()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["http://127.0.0.1:5500"],  # only this origin is allowed
+    allow_credentials=True,  # only needed if you're using cookies/auth headers
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -78,37 +78,37 @@ async def verify_kyc(
         compliance_report = []
         kycFailedFlag = False
         flags = {
-            "document_expired": False,
-            "poor_quality": False,
-            "name_match": None,
-            "dob_match": None,
-            "dob_format_invalid": False,
-            "ID Number Match": False
+            "DOCUMENT_NOT_EXPIRED": True,
+            "CLEAR_DOCUMENT": True,
+            "NAME_MATCHED": False,
+            "DOB_MATCHED": False,
+            #"dob_format_invalid": False,
+            "ID_NO_MATCHED": False
         }
 
         if "expired" in text_norm:
-            flags["document_expired"] = True
+            flags["DOCUMENT_NOT_EXPIRED"] = False
             kycFailedFlag = True
 
         if len(extracted_text.strip()) < 30:
-            flags["poor_quality"] = True
+            flags["CLEAR_DOCUMENT"] = False
             kycFailedFlag = True
 
         if full_name:
             if clean_text(full_name) in text_norm:
-                flags["name_match"] = True
+                flags["NAME_MATCHED"] = True
                 compliance_report.append(f"✅ Name '{full_name}' matched.")
             else:
-                flags["name_match"] = False
+                flags["NAME_MATCHED"] = False
                 kycFailedFlag = True
                 compliance_report.append(f"❌ Name '{full_name}' NOT matched.")
 
         if id_no:
             if clean_text(id_no) in text_norm:
-                flags["ID Number Match"] = True
+                flags["ID_NO_MATCHED"] = True
                 compliance_report.append(f"✅ ID Number '{id_no}' matched.")
             else:
-                flags["ID Number Match"] = False
+                flags["ID_NO_MATCHED"] = False
                 kycFailedFlag = True
                 compliance_report.append(f"❌ ID Number '{id_no}' NOT matched.")
 
@@ -117,14 +117,14 @@ async def verify_kyc(
             if dob_date:
                 dob_formats = [dob_date.strftime("%Y-%m-%d"), dob_date.strftime("%d/%m/%Y")]
                 if any(d in text_norm for d in dob_formats):
-                    flags["dob_match"] = True
+                    flags["DOB_MATCHED"] = True
                     compliance_report.append(f"✅ Date of Birth '{dob}' matched.")
                 else:
-                    flags["dob_match"] = False
+                    flags["DOB_MATCHED"] = False
                     kycFailedFlag = True
                     compliance_report.append(f"❌ Date of Birth '{dob}' NOT matched.")
             else:
-                flags["dob_format_invalid"] = True
+                #flags["dob_format_invalid"] = True
                 kycFailedFlag = True
                 compliance_report.append("⚠️ Date of Birth format should be YYYY-MM-DD or DD/MM/YYYY.")
 
@@ -155,7 +155,7 @@ async def verify_kyc(
         db.close()
 
         return JSONResponse({
-            "extracted_text": extracted_text,
+            #"extracted_text": extracted_text,
             "compliance_report": compliance_report,
             "flags": flags,
             "kycVerified":not kycFailedFlag
